@@ -13,7 +13,7 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getChapters("GEN")[49]);
+		System.out.println(getVerseCount("GEN", 1));
 	}
 	
 	public static String[] getChapters(String bookId) {
@@ -27,6 +27,12 @@ public class BibleAPI {
 
         return chapters;
         }
+	
+	public static int getVerseCount(String bookId, int chapter)
+	{
+		JSONObject dataArray = getVersesJson(bookId, chapter).getJSONObject("data");
+        return dataArray.getInt("verseCount");
+	}
 	
 	public static String[] getBookLongNames()
 	{
@@ -133,4 +139,37 @@ public class BibleAPI {
         return null;
     }
     
+    private static JSONObject getVersesJson(String bookId, int chapter) {
+    	try {
+            URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/" + bookId + "." + chapter);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("api-key", API_KEY);
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                in.close();
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                return jsonResponse;
+                
+                } else {
+                System.out.println("HTTP request failed: " + responseCode);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    	
+    }
 }

@@ -6,6 +6,11 @@ package bible.presentation;
 
 	public class BibleAPITest {
 		
+		@Test
+		public void getVerseCount() {
+			Assert.assertEquals(31, BibleAPI.getVerseCount(BibleAPI.getBookIDs()[0], 1));
+		}
+		
 		@Test 
 		public void getChaptersAmount() {
 			Assert.assertEquals(50, BibleAPI.getChapters("GEN").length);

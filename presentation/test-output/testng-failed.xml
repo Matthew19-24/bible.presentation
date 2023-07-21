@@ -5,7 +5,7 @@
     <classes>
       <class name="bible.presentation.BibleAPITest">
         <methods>
-          <include name="getChaptersNumber"/>
+          <include name="getVerseCount"/>
         </methods>
       </class> <!-- bible.presentation.BibleAPITest -->
     </classes>

@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="8" passed="8" failed="0" skipped="0">
+<testng-results ignored="0" total="9" passed="9" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-07-21T12:32:34 EDT" name="Default suite" finished-at="2023-07-21T12:32:37 EDT" duration-ms="3052">
+  <suite started-at="2023-07-21T13:50:02 EDT" name="Default suite" finished-at="2023-07-21T13:50:05 EDT" duration-ms="3151">
     <groups>
     </groups>
-    <test started-at="2023-07-21T12:32:34 EDT" name="Default test" finished-at="2023-07-21T12:32:37 EDT" duration-ms="3052">
+    <test started-at="2023-07-21T13:50:02 EDT" name="Default test" finished-at="2023-07-21T13:50:05 EDT" duration-ms="3151">
       <class name="bible.presentation.BibleAPITest">
-        <test-method signature="getBookIDsCheck()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:34 EDT" name="getBookIDsCheck" finished-at="2023-07-21T12:32:35 EDT" duration-ms="1146" status="PASS">
+        <test-method signature="getBookIDsCheck()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:02 EDT" name="getBookIDsCheck" finished-at="2023-07-21T13:50:03 EDT" duration-ms="1410" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getBookIDsCheck -->
-        <test-method signature="getBookLongNamesCheck()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:35 EDT" name="getBookLongNamesCheck" finished-at="2023-07-21T12:32:35 EDT" duration-ms="434" status="PASS">
+        <test-method signature="getBookLongNamesCheck()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:03 EDT" name="getBookLongNamesCheck" finished-at="2023-07-21T13:50:03 EDT" duration-ms="313" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getBookLongNamesCheck -->
-        <test-method signature="getBookNamesCheck()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:35 EDT" name="getBookNamesCheck" finished-at="2023-07-21T12:32:36 EDT" duration-ms="198" status="PASS">
+        <test-method signature="getBookNamesCheck()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:03 EDT" name="getBookNamesCheck" finished-at="2023-07-21T13:50:04 EDT" duration-ms="236" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getBookNamesCheck -->
-        <test-method signature="getChaptersAmount()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:36 EDT" name="getChaptersAmount" finished-at="2023-07-21T12:32:36 EDT" duration-ms="304" status="PASS">
+        <test-method signature="getChaptersAmount()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:04 EDT" name="getChaptersAmount" finished-at="2023-07-21T13:50:04 EDT" duration-ms="207" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getChaptersAmount -->
-        <test-method signature="getChaptersNumber()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:36 EDT" name="getChaptersNumber" finished-at="2023-07-21T12:32:36 EDT" duration-ms="438" status="PASS">
+        <test-method signature="getChaptersNumber()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:04 EDT" name="getChaptersNumber" finished-at="2023-07-21T13:50:04 EDT" duration-ms="222" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getChaptersNumber -->
-        <test-method signature="sixtySixGetBookIds()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:36 EDT" name="sixtySixGetBookIds" finished-at="2023-07-21T12:32:37 EDT" duration-ms="155" status="PASS">
+        <test-method signature="getVerseCount()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:04 EDT" name="getVerseCount" finished-at="2023-07-21T13:50:04 EDT" duration-ms="254" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getVerseCount -->
+        <test-method signature="sixtySixGetBookIds()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:04 EDT" name="sixtySixGetBookIds" finished-at="2023-07-21T13:50:04 EDT" duration-ms="100" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- sixtySixGetBookIds -->
-        <test-method signature="sixtySixGetBookLongNames()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:37 EDT" name="sixtySixGetBookLongNames" finished-at="2023-07-21T12:32:37 EDT" duration-ms="98" status="PASS">
+        <test-method signature="sixtySixGetBookLongNames()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:04 EDT" name="sixtySixGetBookLongNames" finished-at="2023-07-21T13:50:05 EDT" duration-ms="177" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- sixtySixGetBookLongNames -->
-        <test-method signature="sixtySixGetBookNames()[pri:0, instance:bible.presentation.BibleAPITest@15aab8c6]" started-at="2023-07-21T12:32:37 EDT" name="sixtySixGetBookNames" finished-at="2023-07-21T12:32:37 EDT" duration-ms="220" status="PASS">
+        <test-method signature="sixtySixGetBookNames()[pri:0, instance:bible.presentation.BibleAPITest@33990a0c]" started-at="2023-07-21T13:50:05 EDT" name="sixtySixGetBookNames" finished-at="2023-07-21T13:50:05 EDT" duration-ms="181" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- sixtySixGetBookNames -->
