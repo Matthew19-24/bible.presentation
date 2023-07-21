@@ -13,17 +13,28 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		getBooks();
+		getBookNames();
 	}
 	
-	
-    public static String[] getBooks() {
-        try {
+    public static String[] getBookNames() {
+      
+        JSONArray dataArray = getBooksJson().getJSONArray("data");
+        String[] allBooks = new String[dataArray.length()];
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            allBooks[i] = bookObject.getString("name");
+        }
+
+        return allBooks;
+        }
+    
+    private static JSONObject getBooksJson() {
+    	try {
             URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/books");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("api-key", API_KEY);
-            System.out.println("Test");
 
             int responseCode = conn.getResponseCode();
 
@@ -37,19 +48,9 @@ public class BibleAPI {
                 }
 
                 in.close();
-                System.out.println(response.toString()); 
-               
-                // Parse the JSON response to extract book names
                 JSONObject jsonResponse = new JSONObject(response.toString());
-                JSONArray dataArray = jsonResponse.getJSONArray("data");
-                String[] allBooks = new String[dataArray.length()];
 
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject bookObject = dataArray.getJSONObject(i);
-                    allBooks[i] = bookObject.getString("name");
-                }
-
-                return allBooks;
+                return jsonResponse;
                 
                 } else {
                 System.out.println("HTTP request failed: " + responseCode);
@@ -59,6 +60,6 @@ public class BibleAPI {
             e.printStackTrace();
         }
         return null;
-        }
+    }
     
 }

@@ -8,13 +8,13 @@ package bible.presentation;
 
 		@Test
 		public void sixtySixBooks() {
-			Assert.assertEquals(66, BibleAPI.getBooks().length);
+			Assert.assertEquals(66, BibleAPI.getBookNames().length);
 		}
 		
 		@Test
 		public void bookCheck() {
-			Assert.assertEquals("Genesis", BibleAPI.getBooks()[0]);
-			Assert.assertEquals("Revelation", BibleAPI.getBooks()[65]);
+			Assert.assertEquals("Genesis", BibleAPI.getBookNames()[0]);
+			Assert.assertEquals("Revelation", BibleAPI.getBookNames()[65]);
 		}
 		
 }
