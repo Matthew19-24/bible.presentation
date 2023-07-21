@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2023-07-21T09:16:59 EDT" name="Default suite" finished-at="2023-07-21T09:17:00 EDT" duration-ms="1602">
+    <groups>
+    </groups>
+    <test started-at="2023-07-21T09:16:59 EDT" name="Default test" finished-at="2023-07-21T09:17:00 EDT" duration-ms="1602">
+      <class name="bible.presentation.BibleAPITest">
+        <test-method signature="bookCheck()[pri:0, instance:bible.presentation.BibleAPITest@29d89d5d]" started-at="2023-07-21T09:16:59 EDT" name="bookCheck" finished-at="2023-07-21T09:17:00 EDT" duration-ms="1399" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- bookCheck -->
+        <test-method signature="sixtySixBooks()[pri:0, instance:bible.presentation.BibleAPITest@29d89d5d]" started-at="2023-07-21T09:17:00 EDT" name="sixtySixBooks" finished-at="2023-07-21T09:17:00 EDT" duration-ms="158" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- sixtySixBooks -->
+      </class> <!-- bible.presentation.BibleAPITest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
