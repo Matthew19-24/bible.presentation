@@ -13,7 +13,32 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		getBookNames();
+		System.out.println(getChapters("GEN")[49]);
+	}
+	
+	public static String[] getChapters(String bookId) {
+        JSONArray dataArray = getChaptersJson(bookId).getJSONArray("data");
+        String[] chapters = new String[dataArray.length() - 1];
+
+        for (int i = 1; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            chapters[i - 1] = bookObject.getString("number");
+        }
+
+        return chapters;
+        }
+	
+	public static String[] getBookLongNames()
+	{
+		JSONArray dataArray = getBooksJson().getJSONArray("data");
+        String[] allBooks = new String[dataArray.length()];
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            allBooks[i] = bookObject.getString("nameLong");
+        }
+
+        return allBooks;
 	}
 	
     public static String[] getBookNames() {
@@ -28,6 +53,52 @@ public class BibleAPI {
 
         return allBooks;
         }
+    
+    public static String[] getBookIDs() {
+        
+        JSONArray dataArray = getBooksJson().getJSONArray("data");
+        String[] allBooks = new String[dataArray.length()];
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            allBooks[i] = bookObject.getString("id");
+        }
+
+        return allBooks;
+        }
+    
+    private static JSONObject getChaptersJson(String bookId) {
+    	try {
+            URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/books/" + bookId + "/chapters");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("api-key", API_KEY);
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                in.close();
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                return jsonResponse;
+                
+                } else {
+                System.out.println("HTTP request failed: " + responseCode);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     private static JSONObject getBooksJson() {
     	try {
