@@ -1,4 +1,4 @@
-package bible.presentation;
+package api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,25 +13,35 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getVerseCount("GEN", 1));
+		System.out.println(getVerses("GEN", 1)[3]);
 	}
 	
-	public static String[] getChapters(String bookId) {
+	public static int[] getChapters(String bookId) {
         JSONArray dataArray = getChaptersJson(bookId).getJSONArray("data");
-        String[] chapters = new String[dataArray.length() - 1];
+        int[] chapters = new int[dataArray.length() - 1];
 
         for (int i = 1; i < dataArray.length(); i++) {
             JSONObject bookObject = dataArray.getJSONObject(i);
-            chapters[i - 1] = bookObject.getString("number");
+            chapters[i - 1] = Integer.parseInt(bookObject.getString("number"));
         }
 
         return chapters;
         }
 	
-	public static int getVerseCount(String bookId, int chapter)
+	private static int getVerseCount(String bookId, int chapter)
 	{
 		JSONObject dataArray = getVersesJson(bookId, chapter).getJSONObject("data");
         return dataArray.getInt("verseCount");
+	}
+	
+	public static int[] getVerses(String bookId, int chapter) {
+		int verseCount = getVerseCount(bookId, chapter);
+		int[] verses = new int[verseCount];
+		
+		for(int i = 0; i < verseCount; i++) {
+			verses[i] = i+1;
+		}
+		return verses;
 	}
 	
 	public static String[] getBookLongNames()
@@ -60,17 +70,20 @@ public class BibleAPI {
         return allBooks;
         }
     
-    public static String[] getBookIDs() {
+    public static String getBookID(String bookName) {
         
         JSONArray dataArray = getBooksJson().getJSONArray("data");
-        String[] allBooks = new String[dataArray.length()];
 
         for (int i = 0; i < dataArray.length(); i++) {
             JSONObject bookObject = dataArray.getJSONObject(i);
-            allBooks[i] = bookObject.getString("id");
-        }
+            String name = bookObject.getString("name");
 
-        return allBooks;
+            // If the "name" field matches the given bookName, return the corresponding "id".
+            if (name.equals(bookName)) {
+                return bookObject.getString("id");
+            }
+        }
+        return null;
         }
     
     private static JSONObject getChaptersJson(String bookId) {

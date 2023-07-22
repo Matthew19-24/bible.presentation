@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="bible.presentation.BibleAPITest">
+      <class name="api.BibleAPITest">
         <methods>
-          <include name="getVerseCount"/>
+          <include name="getBookIDsCheck"/>
         </methods>
-      </class> <!-- bible.presentation.BibleAPITest -->
+      </class> <!-- api.BibleAPITest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

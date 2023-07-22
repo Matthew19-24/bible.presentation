@@ -1,15 +1,9 @@
-package bible.presentation;
+package api;
 
-
-	import org.testng.annotations.Test;
-	import junit.framework.Assert;
+import org.testng.annotations.Test;
+import junit.framework.Assert;
 
 	public class BibleAPITest {
-		
-		@Test
-		public void getVerseCount() {
-			Assert.assertEquals(31, BibleAPI.getVerseCount(BibleAPI.getBookIDs()[0], 1));
-		}
 		
 		@Test 
 		public void getChaptersAmount() {
@@ -35,14 +29,9 @@ package bible.presentation;
 		}
 		
 		@Test
-		public void sixtySixGetBookIds() {
-			Assert.assertEquals(66, BibleAPI.getBookIDs().length);
-		}
-		
-		@Test
 		public void getBookIDsCheck() {
-			Assert.assertEquals("GEN", BibleAPI.getBookIDs()[0]);
-			Assert.assertEquals("REV", BibleAPI.getBookIDs()[65]);
+			Assert.assertEquals("GEN", BibleAPI.getBookID("Genesis"));
+			Assert.assertEquals("REV", BibleAPI.getBookID("Revelation"));
 		}
 		
 		@Test
