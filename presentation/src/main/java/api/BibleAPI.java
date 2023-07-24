@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,7 +16,7 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getChapters("GEN")[3]);
+		System.out.println(getVerse("GEN", 1, 1));
 	}
 	
 	public static int[] getChapters(String bookId) {
@@ -28,7 +31,14 @@ public class BibleAPI {
         return chapters;
         }
 	
-	private static int getVerseCount(String bookId, int chapter)
+	public static String getVerse(String bookId, int chapter, int verse)
+	{
+		JSONObject dataArray = getVerseJson(bookId, chapter, verse).getJSONObject("data");
+		
+        return extractVerseText(dataArray.getString("content"));
+	}
+	
+	public static int getVerseCount(String bookId, int chapter)
 	{
 		JSONObject dataArray = getVersesJson(bookId, chapter).getJSONObject("data");
         return dataArray.getInt("verseCount");
@@ -184,5 +194,55 @@ public class BibleAPI {
         }
         return null;
     	
+    }
+    
+    private static JSONObject getVerseJson(String bookId, int chapter, int verse) {
+    	try {
+    		URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/verses/" + bookId + "." + Integer.toString(chapter) + "." + Integer.toString(verse));
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("api-key", API_KEY);
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                in.close();
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                return jsonResponse;
+                
+                } else {
+                System.out.println("HTTP request failed: " + responseCode);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    	
+    }
+    
+    public static String extractVerseText(String response) {
+        // Find the index of the closing </span> tag and the closing </p> tag.
+        int endIndexSpan = response.indexOf("</span>");
+        int endIndexP = response.indexOf("</p>");
+
+        // Extract the verse text from the response using substring.
+        String verseText = response.substring(endIndexSpan + 7, endIndexP).trim();
+
+        // Remove any remaining HTML tags from the verse text using regular expressions.
+        Pattern htmlPattern = Pattern.compile("<[^>]*>");
+        Matcher matcher = htmlPattern.matcher(verseText);
+        verseText = matcher.replaceAll("");
+
+        return verseText;
     }
 }

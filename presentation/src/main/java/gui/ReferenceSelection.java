@@ -7,96 +7,142 @@ import java.awt.GridLayout;
 public class ReferenceSelection {
 
     public static void main(String[] args) {
-        referenceSelector();
+        SwingUtilities.invokeLater(() -> {
+            VerseDisplay verseDisplayGUI = new VerseDisplay();
+            verseDisplayGUI.setVisible(true);
+
+            referenceSelector(verseDisplayGUI);
+        });
     }
 
-    public static void referenceSelector() {
-
+    public static void referenceSelector(VerseDisplay verseDisplayGUI) {
         // Create the first drop-down menu
         JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
 
-        // Create the second drop-down menu
-        JComboBox<Integer> comboBox2 = new JComboBox<>(toIntegerArray(BibleAPI.getChapters(BibleAPI.getBookID("Genesis"))));
+        // Create a JTextField for the "Chapter" field
+        JTextField chapterField = new JTextField(5);
+        chapterField.setText("1"); // Set initial value to "1"
 
-        // Create the third drop-down menu (initially empty)
-        JComboBox<Integer> comboBox3 = new JComboBox<>(toIntegerArray(BibleAPI.getVerses("GEN", 1)));
+        // Create a JTextField for the "Verse" field
+        JTextField verseField = new JTextField(5);
+        verseField.setText("1"); // Set initial value to "1"
 
-        // Create a panel to hold the drop-down menus
+        // Create a panel to hold the components
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns, 10px vertical and horizontal gaps
         panel.add(new JLabel("Book"));
         panel.add(comboBox1);
         panel.add(new JLabel("Chapter"));
-        panel.add(comboBox2);
+        panel.add(chapterField);
         panel.add(new JLabel("Verse"));
-        panel.add(comboBox3);
+        panel.add(verseField);
+
+        // Create a custom JButton for "Send"
+        JButton sendButton = new JButton("Send");
+        panel.add(sendButton);
 
         // Add an ActionListener to comboBox1
         comboBox1.addActionListener(e -> {
             String selectedOption1 = (String) comboBox1.getSelectedItem();
-            updateComboBoxOptions(selectedOption1, comboBox2, comboBox3);
+            updateComboBoxOptions(selectedOption1, chapterField, verseField);
         });
 
-        // Add an ActionListener to comboBox2
-        comboBox2.addActionListener(e -> {
+     // Add an ActionListener to the "Send" button
+        sendButton.addActionListener(e -> {
+            // Get the selected options from the components
             String selectedOption1 = (String) comboBox1.getSelectedItem();
-            Integer selectedOption2 = (Integer) comboBox2.getSelectedItem();
-            updateComboBoxOptions(selectedOption1, selectedOption2, comboBox3);
+            String chapterText = chapterField.getText().trim();
+            String verseText = verseField.getText().trim();
+
+            if (!chapterText.isEmpty() && !verseText.isEmpty()) {
+                try {
+                    int selectedOption2 = Integer.parseInt(chapterText);
+                    int selectedOption3 = Integer.parseInt(verseText);
+
+                    // Check if the selected chapter and verse are within the valid range
+                    int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption1)).length;
+                    int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption1), selectedOption2).length;
+
+                    if (selectedOption2 > 0 && selectedOption2 <= maxChapter &&
+                            selectedOption3 > 0 && selectedOption3 <= maxVerse) {
+
+                        // Update the text in the VerseDisplay GUI with the selected options
+                        String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
+                        verseDisplayGUI.updateText(verseText1);
+                    } else {
+                        // Show an error message for out of range input
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Invalid chapter or verse number!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                } catch (NumberFormatException ex) {
+                    // Show an error message for invalid integer input
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Please enter valid chapter and verse numbers!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            } else {
+                // Show an error message for empty fields
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Please enter chapter and verse numbers!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         });
 
-        // Show the panel in a JOptionPane
-        int result = JOptionPane.showConfirmDialog(
-                null,
-                panel,
-                "Dependent Drop-Down Menus",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
 
-        // Check if "OK" button was clicked
-        if (result == JOptionPane.OK_OPTION) {
-            // Get the selected options from the three menus
-            String selectedOption1 = (String) comboBox1.getSelectedItem();
-            Integer selectedOption2 = (Integer) comboBox2.getSelectedItem();
-            Integer selectedOption3 = (Integer) comboBox3.getSelectedItem();
+        // Create a custom JDialog to hold the panel
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Dependent Drop-Down Menus");
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Change this to JDialog.DO_NOTHING_ON_CLOSE
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // Center the dialog on the screen
+        dialog.setVisible(true);
+    }
 
-            // Display the selected options in a single dialog box
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Books: " + selectedOption1 + "\n" +
-                            "Chapter: " + selectedOption2 + "\n" +
-                            "Verse: " + selectedOption3,
-                    "Selected Options",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+    private static void updateComboBoxOptions(String selectedOption, JTextField chapterField, JTextField verseField) {
+        // Determine the maximum chapter and verse numbers based on the selection in the first menu
+        int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption)).length;
+        int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption), 1).length;
+
+        // Set the maximum text length for the chapter and verse fields to limit the input range
+        chapterField.setDocument(new JTextFieldLimit(2, maxChapter));
+        verseField.setDocument(new JTextFieldLimit(2, maxVerse));
+    }
+
+    @SuppressWarnings("serial")
+	private static class JTextFieldLimit extends javax.swing.text.PlainDocument {
+        private int limit;
+        private int maxValue;
+
+        JTextFieldLimit(int limit, int maxValue) {
+            super();
+            this.limit = limit;
+            this.maxValue = maxValue;
         }
-    }
 
-    private static void updateComboBoxOptions(String selectedOption, JComboBox<Integer> comboBox2, JComboBox<Integer> comboBox3) {
-        // Determine the options for the second drop-down menu based on the selection in the first menu
-        Integer[] menu2Options = toIntegerArray(BibleAPI.getChapters(BibleAPI.getBookID(selectedOption)));
+        @Override
+        public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+            if (str == null)
+                return;
 
-        // Determine the options for the third drop-down menu based on the selection in the first menu
-        Integer[] menu3Options = toIntegerArray(BibleAPI.getChapters(BibleAPI.getBookID(selectedOption)));
-
-        // Update the options of comboBox2 and comboBox3
-        comboBox2.setModel(new DefaultComboBoxModel<>(menu2Options));
-        comboBox3.setModel(new DefaultComboBoxModel<>(menu3Options));
-    }
-
-    private static void updateComboBoxOptions(String selectedOption, int selectedOption2, JComboBox<Integer> comboBox3) {
-        // Determine the options for the third drop-down menu based on the selection in the first menu
-        Integer[] menu3Options = toIntegerArray(BibleAPI.getVerses(BibleAPI.getBookID(selectedOption), selectedOption2));
-
-        // Update the options of comboBox2 and comboBox3
-        comboBox3.setModel(new DefaultComboBoxModel<>(menu3Options));
-    }
-
-    private static Integer[] toIntegerArray(int[] intArray) {
-        Integer[] result = new Integer[intArray.length];
-        for (int i = 0; i < intArray.length; i++) {
-            result[i] = intArray[i];
+            if ((getLength() + str.length()) <= limit) {
+                try {
+                    int value = Integer.parseInt(getText(0, getLength()) + str);
+                    if (value <= maxValue)
+                        super.insertString(offset, str, attr);
+                } catch (NumberFormatException e) {
+                    // Ignore non-integer input
+                }
+            }
         }
-        return result;
     }
 }
-
