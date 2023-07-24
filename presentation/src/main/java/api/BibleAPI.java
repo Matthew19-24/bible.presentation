@@ -16,7 +16,7 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getVerse("GEN", 1, 1));
+		System.out.println(getBookID("John"));
 	}
 	
 	public static int[] getChapters(String bookId) {

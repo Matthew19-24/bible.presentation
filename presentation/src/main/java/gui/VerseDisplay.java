@@ -7,13 +7,13 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class VerseDisplay extends JFrame {
 
-	private static String verse = "In the beginning God created the heavens and the earth. In the beginning God created the heavens and the earth.";
+	private static String verse = "Please select a verse and click Send.";
 	
     private JLabel textLabel;
 
     public VerseDisplay() {
         // Set up the JFrame
-        setTitle("Auto Resize Text GUI");
+        setTitle("Verse Display");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
