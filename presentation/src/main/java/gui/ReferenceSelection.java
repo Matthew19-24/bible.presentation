@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+
 import api.BibleAPI;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -45,8 +46,10 @@ public class ReferenceSelection {
         // Add an ActionListener to comboBox1
         comboBox1.addActionListener(e -> {
             String selectedOption1 = (String) comboBox1.getSelectedItem();
+            System.out.println("Book changed");
             updateComboBoxOptions(selectedOption1, chapterField, verseField);
         });
+
 
         // Add an ActionListener to the "Send" button
         sendButton.addActionListener(new ActionListener() {
@@ -113,40 +116,11 @@ public class ReferenceSelection {
     }
 
     private static void updateComboBoxOptions(String selectedOption, JTextField chapterField, JTextField verseField) {
-        // Determine the maximum chapter and verse numbers based on the selection in the first menu
-        int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption)).length;
-        int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption), 1).length;
-
-        // Set the maximum text length for the chapter and verse fields to limit the input range
-        chapterField.setDocument(new JTextFieldLimit(2, maxChapter));
-        verseField.setDocument(new JTextFieldLimit(2, maxVerse));
+        // Change fields to 1
+        chapterField.setText("1");
+        verseField.setText("1");
     }
 
-    @SuppressWarnings("serial")
-    private static class JTextFieldLimit extends javax.swing.text.PlainDocument {
-        private int limit;
-        private int maxValue;
 
-        JTextFieldLimit(int limit, int maxValue) {
-            super();
-            this.limit = limit;
-            this.maxValue = maxValue;
-        }
-
-        @Override
-        public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
-            if (str == null)
-                return;
-
-            if ((getLength() + str.length()) <= limit) {
-                try {
-                    int value = Integer.parseInt(getText(0, getLength()) + str);
-                    if (value <= maxValue)
-                        super.insertString(offset, str, attr);
-                } catch (NumberFormatException e) {
-                    // Ignore non-integer input
-                }
-            }
-        }
+ 
     }
-}
