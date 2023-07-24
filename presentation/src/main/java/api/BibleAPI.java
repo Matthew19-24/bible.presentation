@@ -13,7 +13,7 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getVerses("GEN", 1)[3]);
+		System.out.println(getChapters("GEN")[3]);
 	}
 	
 	public static int[] getChapters(String bookId) {
@@ -154,7 +154,7 @@ public class BibleAPI {
     
     private static JSONObject getVersesJson(String bookId, int chapter) {
     	try {
-            URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/" + bookId + "." + chapter);
+    		URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/" + bookId + "." + Integer.toString(chapter));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("api-key", API_KEY);

@@ -5,7 +5,7 @@
     <classes>
       <class name="api.BibleAPITest">
         <methods>
-          <include name="getBookIDsCheck"/>
+          <include name="getChaptersNumber"/>
         </methods>
       </class> <!-- api.BibleAPITest -->
     </classes>

@@ -13,8 +13,8 @@ import junit.framework.Assert;
 		
 		@Test
 		public void getChaptersNumber() {
-			Assert.assertEquals("1", BibleAPI.getChapters("GEN")[0]);
-			Assert.assertEquals("50", BibleAPI.getChapters("GEN")[49]);
+			Assert.assertEquals(1, BibleAPI.getChapters("GEN")[0]);
+			Assert.assertEquals(50, BibleAPI.getChapters("GEN")[49]);
 		}
 
 		@Test
