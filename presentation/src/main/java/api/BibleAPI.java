@@ -11,6 +11,34 @@ import org.json.JSONObject;
 public class BibleAPI extends ApiCalls{
 	
 	/**
+	 * Returns the text from the verse reference
+	 * @param bookId The book ID of the book that the verse is in
+	 * @param chapter The chapter that the verse is in
+	 * @param verse The verse number to get the text from
+	 * @return The text from the reference
+	 */
+	public static String getVerse(String bookId, int chapter, int verse)
+	{
+        return getVerseJson(bookId,chapter,verse).getString("text");
+	}
+	
+	/**
+	 * Returns the verses within a specific chapter of a book
+	 * @param bookId The book ID of the book that the chapter is in
+	 * @param chapter The chapter to get the verses from
+	 * @return int array of verses in the chapter
+	 */
+	public static int[] getVerses(String bookId, int chapter) {
+		int verseCount = getVersesJson(bookId, chapter).getJSONObject("data").getInt("verseCount");
+		int[] verses = new int[verseCount];
+		
+		for(int i = 0; i < verseCount; i++) {
+			verses[i] = i+1;
+		}
+		return verses;
+	}
+	
+	/**
 	 * Returns the chapters in a book
 	 * @param bookId The book ID of the book that the chapters are in
 	 * @return int array of chapters in a book
@@ -25,80 +53,6 @@ public class BibleAPI extends ApiCalls{
         }
 
         return chapters;
-        }
-	
-	/**
-	 * Returns the text from the verse reference
-	 * @param bookId The book ID of the book that the verse is in
-	 * @param chapter The chapter that the verse is in
-	 * @param verse The verse number to get the text from
-	 * @return The text from the reference
-	 */
-	public static String getVerse(String bookId, int chapter, int verse)
-	{
-        return getVerseJson(bookId,chapter,verse).getString("text");
-	}
-	
-	/**
-	 * Returns the amount of verses within a specific chapter of a book
-	 * @param bookId The book ID of the book that the chapter is in
-	 * @param chapter The chapter to get the verse count from
-	 * @return The verse count from the chapter
-	 */
-	public static int getVerseCount(String bookId, int chapter)
-	{
-		JSONObject dataArray = getVersesJson(bookId, chapter).getJSONObject("data");
-        return dataArray.getInt("verseCount");
-	}
-	
-	/**
-	 * Returns the verses within a specific chapter of a book
-	 * @param bookId The book ID of the book that the chapter is in
-	 * @param chapter The chapter to get the verses from
-	 * @return int array of verses in the chapter
-	 */
-	public static int[] getVerses(String bookId, int chapter) {
-		int verseCount = getVerseCount(bookId, chapter);
-		int[] verses = new int[verseCount];
-		
-		for(int i = 0; i < verseCount; i++) {
-			verses[i] = i+1;
-		}
-		return verses;
-	}
-	
-	/**
-	 * Returns all books of the bible as their long names
-	 * @return Long names of all books of the bible
-	 */
-	public static String[] getBookLongNames()
-	{
-		JSONArray dataArray = getBooksJson().getJSONArray("data");
-        String[] allBooks = new String[dataArray.length()];
-
-        for (int i = 0; i < dataArray.length(); i++) {
-            JSONObject bookObject = dataArray.getJSONObject(i);
-            allBooks[i] = bookObject.getString("nameLong");
-        }
-
-        return allBooks;
-	}
-	
-	/**
-	 * Returns names of all of the books of the bible
-	 * @return Names of all the books of the bible
-	 */
-    public static String[] getBookNames() {
-      
-        JSONArray dataArray = getBooksJson().getJSONArray("data");
-        String[] allBooks = new String[dataArray.length()];
-
-        for (int i = 0; i < dataArray.length(); i++) {
-            JSONObject bookObject = dataArray.getJSONObject(i);
-            allBooks[i] = bookObject.getString("name");
-        }
-
-        return allBooks;
         }
     
     /**
@@ -122,4 +76,37 @@ public class BibleAPI extends ApiCalls{
         return null;
         }
     
+    /**
+	 * Returns all books of the bible as their long names
+	 * @return Long names of all books of the bible
+	 */
+	public static String[] getBookLongNames()
+	{
+		JSONArray dataArray = getBooksJson().getJSONArray("data");
+        String[] allBooks = new String[dataArray.length()];
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            allBooks[i] = bookObject.getString("nameLong");
+        }
+
+        return allBooks;
+	}
+    
+	/**
+	 * Returns names of all of the books of the bible
+	 * @return Names of all the books of the bible
+	 */
+    public static String[] getBookNames() {
+      
+        JSONArray dataArray = getBooksJson().getJSONArray("data");
+        String[] allBooks = new String[dataArray.length()];
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject bookObject = dataArray.getJSONObject(i);
+            allBooks[i] = bookObject.getString("name");
+        }
+
+        return allBooks;
+        }
 }
