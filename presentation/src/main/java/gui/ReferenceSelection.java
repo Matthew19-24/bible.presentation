@@ -20,7 +20,7 @@ public class ReferenceSelection {
 
     public static void referenceSelector(VerseDisplay verseDisplayGUI) {
         // Create the first drop-down menu
-        JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
+    	JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
 
         // Create a JTextField for the "Chapter" field
         JTextField chapterField = new JTextField(5);
@@ -107,7 +107,7 @@ public class ReferenceSelection {
 
         // Create a custom JDialog to hold the panel
         JDialog dialog = new JDialog();
-        dialog.setTitle("Dependent Drop-Down Menus");
+        dialog.setTitle("Verse Selector");
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Change this to JDialog.DO_NOTHING_ON_CLOSE
         dialog.add(panel);
         dialog.pack();

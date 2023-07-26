@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +14,7 @@ public class BibleAPI {
 	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
 	
 	public static void main(String[] args) {
-		System.out.println(getBookID("John"));
+		System.out.println(getVerse("JHN", 3, 16).trim());
 	}
 	
 	public static int[] getChapters(String bookId) {
@@ -33,9 +31,8 @@ public class BibleAPI {
 	
 	public static String getVerse(String bookId, int chapter, int verse)
 	{
-		JSONObject dataArray = getVerseJson(bookId, chapter, verse).getJSONObject("data");
 		
-        return extractVerseText(dataArray.getString("content"));
+        return getVerseJson(bookId,chapter,verse).getString("text");
 	}
 	
 	public static int getVerseCount(String bookId, int chapter)
@@ -198,10 +195,9 @@ public class BibleAPI {
     
     private static JSONObject getVerseJson(String bookId, int chapter, int verse) {
     	try {
-    		URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/verses/" + bookId + "." + Integer.toString(chapter) + "." + Integer.toString(verse));
+    		URL url = new URL("https://bible-api.com/" + bookId + " " + Integer.toString(chapter) + ":" + Integer.toString(verse) + "?translation=kjv");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("api-key", API_KEY);
 
             int responseCode = conn.getResponseCode();
 
@@ -230,19 +226,4 @@ public class BibleAPI {
     	
     }
     
-    public static String extractVerseText(String response) {
-        // Find the index of the closing </span> tag and the closing </p> tag.
-        int endIndexSpan = response.indexOf("</span>");
-        int endIndexP = response.indexOf("</p>");
-
-        // Extract the verse text from the response using substring.
-        String verseText = response.substring(endIndexSpan + 7, endIndexP).trim();
-
-        // Remove any remaining HTML tags from the verse text using regular expressions.
-        Pattern htmlPattern = Pattern.compile("<[^>]*>");
-        Matcher matcher = htmlPattern.matcher(verseText);
-        verseText = matcher.replaceAll("");
-
-        return verseText;
-    }
 }

@@ -121,4 +121,3 @@ public class VerseDisplay extends JFrame {
         });
     }
 }
-
