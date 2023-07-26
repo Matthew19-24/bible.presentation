@@ -1,22 +1,20 @@
 package api;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class BibleAPI {
-
-	private static final String API_KEY = "db1951b2ccc58f601dbf816e7c27723e";
+/**
+ * The BibleAPI class is intended to retrieve books, chapters and verses of the bible.
+ * @author Matthew McCaughey
+ *
+ */
+public class BibleAPI extends ApiCalls{
 	
-	public static void main(String[] args) {
-		System.out.println(getVerse("JHN", 3, 16).trim());
-	}
-	
+	/**
+	 * Returns the chapters in a book
+	 * @param bookId The book ID of the book that the chapters are in
+	 * @return int array of chapters in a book
+	 */
 	public static int[] getChapters(String bookId) {
         JSONArray dataArray = getChaptersJson(bookId).getJSONArray("data");
         int[] chapters = new int[dataArray.length() - 1];
@@ -29,18 +27,36 @@ public class BibleAPI {
         return chapters;
         }
 	
+	/**
+	 * Returns the text from the verse reference
+	 * @param bookId The book ID of the book that the verse is in
+	 * @param chapter The chapter that the verse is in
+	 * @param verse The verse number to get the text from
+	 * @return The text from the reference
+	 */
 	public static String getVerse(String bookId, int chapter, int verse)
 	{
-		
         return getVerseJson(bookId,chapter,verse).getString("text");
 	}
 	
+	/**
+	 * Returns the amount of verses within a specific chapter of a book
+	 * @param bookId The book ID of the book that the chapter is in
+	 * @param chapter The chapter to get the verse count from
+	 * @return The verse count from the chapter
+	 */
 	public static int getVerseCount(String bookId, int chapter)
 	{
 		JSONObject dataArray = getVersesJson(bookId, chapter).getJSONObject("data");
         return dataArray.getInt("verseCount");
 	}
 	
+	/**
+	 * Returns the verses within a specific chapter of a book
+	 * @param bookId The book ID of the book that the chapter is in
+	 * @param chapter The chapter to get the verses from
+	 * @return int array of verses in the chapter
+	 */
 	public static int[] getVerses(String bookId, int chapter) {
 		int verseCount = getVerseCount(bookId, chapter);
 		int[] verses = new int[verseCount];
@@ -51,6 +67,10 @@ public class BibleAPI {
 		return verses;
 	}
 	
+	/**
+	 * Returns all books of the bible as their long names
+	 * @return Long names of all books of the bible
+	 */
 	public static String[] getBookLongNames()
 	{
 		JSONArray dataArray = getBooksJson().getJSONArray("data");
@@ -64,6 +84,10 @@ public class BibleAPI {
         return allBooks;
 	}
 	
+	/**
+	 * Returns names of all of the books of the bible
+	 * @return Names of all the books of the bible
+	 */
     public static String[] getBookNames() {
       
         JSONArray dataArray = getBooksJson().getJSONArray("data");
@@ -77,6 +101,11 @@ public class BibleAPI {
         return allBooks;
         }
     
+    /**
+     * Returns the book ID of a specific book
+     * @param bookName The name of the book
+     * @return The book ID of the specific book
+     */
     public static String getBookID(String bookName) {
         
         JSONArray dataArray = getBooksJson().getJSONArray("data");
@@ -92,138 +121,5 @@ public class BibleAPI {
         }
         return null;
         }
-    
-    private static JSONObject getChaptersJson(String bookId) {
-    	try {
-            URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/books/" + bookId + "/chapters");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("api-key", API_KEY);
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-
-                in.close();
-                JSONObject jsonResponse = new JSONObject(response.toString());
-
-                return jsonResponse;
-                
-                } else {
-                System.out.println("HTTP request failed: " + responseCode);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    private static JSONObject getBooksJson() {
-    	try {
-            URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/books");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("api-key", API_KEY);
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-
-                in.close();
-                JSONObject jsonResponse = new JSONObject(response.toString());
-
-                return jsonResponse;
-                
-                } else {
-                System.out.println("HTTP request failed: " + responseCode);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    private static JSONObject getVersesJson(String bookId, int chapter) {
-    	try {
-    		URL url = new URL("https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/" + bookId + "." + Integer.toString(chapter));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("api-key", API_KEY);
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-
-                in.close();
-                JSONObject jsonResponse = new JSONObject(response.toString());
-
-                return jsonResponse;
-                
-                } else {
-                System.out.println("HTTP request failed: " + responseCode);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    	
-    }
-    
-    private static JSONObject getVerseJson(String bookId, int chapter, int verse) {
-    	try {
-    		URL url = new URL("https://bible-api.com/" + bookId + " " + Integer.toString(chapter) + ":" + Integer.toString(verse) + "?translation=kjv");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-
-                in.close();
-                JSONObject jsonResponse = new JSONObject(response.toString());
-
-                return jsonResponse;
-                
-                } else {
-                System.out.println("HTTP request failed: " + responseCode);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    	
-    }
     
 }

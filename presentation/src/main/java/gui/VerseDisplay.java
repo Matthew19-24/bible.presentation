@@ -62,7 +62,6 @@ public class VerseDisplay extends JFrame {
         resizeText();
     }
 
-
     private void resizeText() {
         // Get the current width and height of the JFrame, considering its insets (borders and title bar)
         Insets insets = getInsets();
@@ -114,10 +113,4 @@ public class VerseDisplay extends JFrame {
         setText(newText);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VerseDisplay gui = new VerseDisplay();
-            gui.setVisible(true);
-        });
-    }
 }

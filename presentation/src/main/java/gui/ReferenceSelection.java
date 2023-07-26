@@ -1,22 +1,12 @@
 package gui;
 
 import javax.swing.*;
-
 import api.BibleAPI;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ReferenceSelection {
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VerseDisplay verseDisplayGUI = new VerseDisplay();
-            verseDisplayGUI.setVisible(true);
-
-            referenceSelector(verseDisplayGUI);
-        });
-    }
 
     public static void referenceSelector(VerseDisplay verseDisplayGUI) {
         // Create the first drop-down menu
@@ -49,7 +39,6 @@ public class ReferenceSelection {
             System.out.println("Book changed");
             updateComboBoxOptions(selectedOption1, chapterField, verseField);
         });
-
 
         // Add an ActionListener to the "Send" button
         sendButton.addActionListener(new ActionListener() {
@@ -120,7 +109,4 @@ public class ReferenceSelection {
         chapterField.setText("1");
         verseField.setText("1");
     }
-
-
- 
-    }
+}
