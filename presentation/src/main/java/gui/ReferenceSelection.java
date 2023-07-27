@@ -19,7 +19,7 @@ public class ReferenceSelection {
 	 */
     public static void referenceSelector(VerseDisplay verseDisplayGUI) {
         // Create the first drop-down menu
-    	JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
+        JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
 
         // Create a JTextField for the "Chapter" field
         JTextField chapterField = new JTextField(5);
@@ -64,14 +64,26 @@ public class ReferenceSelection {
 
                         // Check if the selected chapter and verse are within the valid range
                         int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption1)).length;
+             
+                        
+                        if(selectedOption2 > 0 && selectedOption2 <=maxChapter) {
                         int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption1), selectedOption2).length;
-
-                        if (selectedOption2 > 0 && selectedOption2 <= maxChapter &&
-                                selectedOption3 > 0 && selectedOption3 <= maxVerse) {
-
-                            // Update the text in the VerseDisplay GUI with the selected options
-                            String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
-                            verseDisplayGUI.setText(verseText1);
+                        
+	                        if (selectedOption3 > 0 && selectedOption3 <= maxVerse) {
+	
+	                            // Update the text in the VerseDisplay GUI with the selected options
+	                        	System.out.println(selectedOption2 + "<=" + maxChapter);
+	                            String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
+	                            verseDisplayGUI.setText(verseText1);
+	                        } else {
+	                            // Show an error message for out of range input
+	                            JOptionPane.showMessageDialog(
+	                                    null,
+	                                    "Invalid chapter or verse number!",
+	                                    "Error",
+	                                    JOptionPane.ERROR_MESSAGE
+	                            		);
+	                        		}
                         } else {
                             // Show an error message for out of range input
                             JOptionPane.showMessageDialog(
@@ -79,9 +91,10 @@ public class ReferenceSelection {
                                     "Invalid chapter or verse number!",
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE
-                            );
-                        }
-                    } catch (NumberFormatException ex) {
+                            		);
+                        		}
+                        
+                    	} catch (NumberFormatException ex) {
                         // Show an error message for invalid integer input
                         JOptionPane.showMessageDialog(
                                 null,
