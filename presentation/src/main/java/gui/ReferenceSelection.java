@@ -6,8 +6,17 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The referenceSelection class is to create the GUI for the referenceSelector
+ * @author Matthew McCaughey
+ *
+ */
 public class ReferenceSelection {
 
+	/**
+	 * The referenceSelector method opens the Reference Selector GUI to run the program.
+	 * @param verseDisplayGUI The Verse Display GUI to correspond and send verses to.
+	 */
     public static void referenceSelector(VerseDisplay verseDisplayGUI) {
         // Create the first drop-down menu
     	JComboBox<String> comboBox1 = new JComboBox<>(BibleAPI.getBookNames());
@@ -35,9 +44,8 @@ public class ReferenceSelection {
 
         // Add an ActionListener to comboBox1
         comboBox1.addActionListener(e -> {
-            String selectedOption1 = (String) comboBox1.getSelectedItem();
-            System.out.println("Book changed");
-            updateComboBoxOptions(selectedOption1, chapterField, verseField);
+            chapterField.setText("1");
+            verseField.setText("1");
         });
 
         // Add an ActionListener to the "Send" button
@@ -104,9 +112,4 @@ public class ReferenceSelection {
         dialog.setVisible(true);
     }
 
-    private static void updateComboBoxOptions(String selectedOption, JTextField chapterField, JTextField verseField) {
-        // Change fields to 1
-        chapterField.setText("1");
-        verseField.setText("1");
-    }
 }
