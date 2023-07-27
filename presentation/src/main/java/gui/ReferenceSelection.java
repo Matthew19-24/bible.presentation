@@ -71,7 +71,7 @@ public class ReferenceSelection {
 
                             // Update the text in the VerseDisplay GUI with the selected options
                             String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
-                            verseDisplayGUI.updateText(verseText1);
+                            verseDisplayGUI.setText(verseText1);
                         } else {
                             // Show an error message for out of range input
                             JOptionPane.showMessageDialog(

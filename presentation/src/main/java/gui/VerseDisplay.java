@@ -4,13 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.StringTokenizer;
 
+/**
+ * The VerseDisplay class is to create the GUI to display Bible verses on
+ * @author Matthew McCaughey
+ *
+ */
 @SuppressWarnings("serial")
 public class VerseDisplay extends JFrame {
 
+	/**
+	 * The verse to be displayed on the screen
+	 */
 	private static String verse = "Please select a verse and click Send.";
 	
+	/**
+	 * The Jlabel to display the verse with
+	 */
     private JLabel textLabel;
 
+    /**
+     * Used to initialize the GUI
+     */
     public VerseDisplay() {
         // Set up the JFrame
         setTitle("Verse Display");
@@ -37,6 +51,10 @@ public class VerseDisplay extends JFrame {
         });
     }
 
+    /**
+     * Used to set the text on the VerseDisplay GUI
+     * @param text The text to display on the GUI
+     */
     public void setText(String text) {
         // Insert line breaks after every 50 characters in the verse text
         StringBuilder formattedText = new StringBuilder("<html><center>");
@@ -62,6 +80,9 @@ public class VerseDisplay extends JFrame {
         resizeText();
     }
 
+    /**
+     * Used to resize the text to the size of the GUI
+     */
     private void resizeText() {
         // Get the current width and height of the JFrame, considering its insets (borders and title bar)
         Insets insets = getInsets();
@@ -78,6 +99,13 @@ public class VerseDisplay extends JFrame {
         textLabel.setFont(new Font(textLabel.getFont().getName(), textLabel.getFont().getStyle(), fontSize));
     }
 
+    /**
+     * Used to calculate how big the font size should be
+     * @param text The text that is being displayed
+     * @param width The width of the GUI
+     * @param height The height of the GUI
+     * @return The font size to use
+     */
     private int calculateFontSizeToFit(String text, int width, int height) {
         int fontSize = 1;
         FontMetrics fontMetrics;
@@ -107,10 +135,6 @@ public class VerseDisplay extends JFrame {
 
         // Reduce font size by 1 to make sure the text fits the frame
         return fontSize - 1;
-    }
-
-    public void updateText(String newText) {
-        setText(newText);
     }
 
 }
