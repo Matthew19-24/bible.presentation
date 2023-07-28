@@ -30,13 +30,7 @@ public class ReferenceSelection {
         verseField.setText("1"); // Set initial value to "1"
 
         // Create a panel to hold the components
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Center alignment, 10px vertical and horizontal gaps
-        panel.add(new JLabel("Book"));
-        panel.add(comboBox1);
-        panel.add(new JLabel("Chapter"));
-        panel.add(chapterField);
-        panel.add(new JLabel("Verse"));
-        panel.add(verseField);
+        JPanel panel = createJPanel(comboBox1, chapterField, verseField);
 
         // Create a custom JButton for "Send"
         JButton sendButton = new JButton("Send");
@@ -48,11 +42,64 @@ public class ReferenceSelection {
             verseField.setText("1");
         });
 
-        // Add an ActionListener to the "Send" button
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Get the selected options from the components
+        // Add the send button listener
+        addSendButtonListener(sendButton, comboBox1, chapterField, verseField, verseDisplayGUI);
+
+        // Create a custom JDialog to hold the panel
+        JDialog dialog = createJDialog(panel);
+        dialog.setVisible(true);
+    }
+    
+    /**
+     * Creates a custom JDialog to hold the panel.
+     * @param panel The JPanel that holds the components.
+     * @return The created JDialog.
+     */
+    private static JDialog createJDialog(JPanel panel) {
+    	JDialog dialog = new JDialog();
+        dialog.setTitle("Verse Selector");
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Change this to JDialog.DO_NOTHING_ON_CLOSE
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null); // Center the dialog on the screen
+        
+        return dialog;
+    }
+    
+    /**
+     * Creates a JPanel to hold the components.
+     * @param comboBox1 The JComboBox representing the book drop-down menu.
+     * @param chapterField The JTextField for chapter input.
+     * @param verseField The JTextField for verse input.
+     * @return The created JPanel.
+     */
+    private static JPanel createJPanel(JComboBox<String> comboBox1, JTextField chapterField, JTextField verseField) {
+    	JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Center alignment, 10px vertical and horizontal gaps
+        panel.add(new JLabel("Book"));
+        panel.add(comboBox1);
+        panel.add(new JLabel("Chapter"));
+        panel.add(chapterField);
+        panel.add(new JLabel("Verse"));
+        panel.add(verseField);
+        
+        return panel;
+    }
+    
+    /**
+     * Adds an ActionListener to the "Send" button to handle verse retrieval and display.
+     * 
+     * @param sendButton The JButton representing the "Send" button.
+     * @param comboBox1 The JComboBox representing the book drop-down menu.
+     * @param chapterField The JTextField for chapter input.
+     * @param verseField The JTextField for verse input.
+     * @param verseDisplayGUI The Verse Display GUI to display the selected verse.
+     */
+    private static void addSendButtonListener(JButton sendButton, JComboBox<String> comboBox1, JTextField chapterField,
+            JTextField verseField, VerseDisplay verseDisplayGUI) {
+    	sendButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			// Get the selected options from the components
                 String selectedOption1 = (String) comboBox1.getSelectedItem();
                 String chapterText = chapterField.getText().trim();
                 String verseText = verseField.getText().trim();
@@ -113,16 +160,7 @@ public class ReferenceSelection {
                     );
                 }
             }
-        });
-
-        // Create a custom JDialog to hold the panel
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Verse Selector");
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Change this to JDialog.DO_NOTHING_ON_CLOSE
-        dialog.add(panel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null); // Center the dialog on the screen
-        dialog.setVisible(true);
-    }
-
+    		});
+    	}
+    
 }
