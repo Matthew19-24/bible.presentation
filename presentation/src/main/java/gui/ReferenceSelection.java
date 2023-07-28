@@ -55,6 +55,7 @@ public class ReferenceSelection {
 
         // Create a custom JDialog to hold the panel
         JDialog dialog = createJDialog(panel);
+        dialog.setResizable(false); // Set the dialog as non-resizable
         dialog.setVisible(true);
     }
     
