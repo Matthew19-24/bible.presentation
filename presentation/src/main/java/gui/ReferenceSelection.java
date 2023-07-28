@@ -35,6 +35,14 @@ public class ReferenceSelection {
         // Create a custom JButton for "Send"
         JButton sendButton = new JButton("Send");
         panel.add(sendButton);
+        
+        // Create a custom JButton for "Next"
+        JButton previousButton = new JButton("Previous");
+        panel.add(previousButton);
+        
+        // Create a custom JButton for "Next"
+        JButton nextButton = new JButton("Next");
+        panel.add(nextButton);
 
         // Add an ActionListener to comboBox1
         comboBox1.addActionListener(e -> {
