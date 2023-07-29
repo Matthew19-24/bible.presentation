@@ -109,7 +109,7 @@ public class ReferenceSelection {
     		@Override
     		public void actionPerformed(ActionEvent e) {
     			// Get the selected options from the components
-                String selectedOption1 = (String) comboBox1.getSelectedItem();
+                String selectedBook = BibleAPI.getBookID((String) comboBox1.getSelectedItem());
                 String chapterText = chapterField.getText().trim();
                 String verseText = verseField.getText().trim();
 
@@ -119,18 +119,22 @@ public class ReferenceSelection {
                         int selectedOption3 = Integer.parseInt(verseText);
 
                         // Check if the selected chapter and verse are within the valid range
-                        int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption1)).length;
+                        int maxChapter = BibleAPI.getChapters(selectedBook).length;
              
                         
                         if(selectedOption2 > 0 && selectedOption2 <=maxChapter) {
-                        int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption1), selectedOption2).length;
+                        int maxVerse = BibleAPI.getVerses(selectedBook, selectedOption2).length;
                         
 	                        if (selectedOption3 > 0 && selectedOption3 <= maxVerse) {
 	
 	                            // Update the text in the VerseDisplay GUI with the selected options
-	                        	System.out.println(selectedOption2 + "<=" + maxChapter);
-	                            String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
+	                            String verseText1 = BibleAPI.getVerse(selectedBook, selectedOption2, selectedOption3);
 	                            verseDisplayGUI.setText(verseText1);
+	                            verseDisplayGUI.verseReference.setBook(selectedBook);
+	                            verseDisplayGUI.verseReference.setChapter(selectedOption2);
+	                            verseDisplayGUI.verseReference.setVerse(selectedOption3);
+	                            System.out.println(verseDisplayGUI.verseReference.getBook() + " " + verseDisplayGUI.verseReference.getChapter() + ":" + verseDisplayGUI.verseReference.getVerse());
+	                            
 	                        } else {
 	                            // Show an error message for out of range input
 	                            JOptionPane.showMessageDialog(

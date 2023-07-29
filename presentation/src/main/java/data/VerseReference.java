@@ -5,7 +5,7 @@ package data;
  * @author Matthew McCaughey
  *
  */
-public class verseReference {
+public class VerseReference {
 	
 	/**
 	 * The book the reference is in.

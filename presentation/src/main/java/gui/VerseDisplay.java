@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import data.VerseReference;
 import java.util.StringTokenizer;
 
 /**
@@ -12,6 +13,10 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class VerseDisplay extends JFrame {
 
+	/**
+	 * The verse reference currently displayed on screen.
+	 */
+	VerseReference verseReference = new VerseReference();
 	
 	/**
 	 * The verse to be displayed on the screen
