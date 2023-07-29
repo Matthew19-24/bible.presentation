@@ -12,10 +12,11 @@ import java.util.StringTokenizer;
 @SuppressWarnings("serial")
 public class VerseDisplay extends JFrame {
 
+	
 	/**
 	 * The verse to be displayed on the screen
 	 */
-	private static String verse = "Please select a verse and click Send.";
+	private static String displayText = "Please select a verse and click Send.";
 	
 	/**
 	 * The Jlabel to display the verse with
@@ -41,7 +42,7 @@ public class VerseDisplay extends JFrame {
         getContentPane().add(textLabel);
 
         // Set an initial text
-        setText(verse);
+        setText(displayText);
 
         // Add a ComponentListener to detect window resizing and update the text size accordingly
         addComponentListener(new java.awt.event.ComponentAdapter() {
