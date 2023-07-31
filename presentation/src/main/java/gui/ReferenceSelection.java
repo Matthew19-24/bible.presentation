@@ -94,6 +94,19 @@ public class ReferenceSelection {
         return panel;
     }
     
+    private static void addNextButtonListner(JButton nextButton, VerseDisplay verseDisplay) {
+    	nextButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			String book = verseDisplay.verseReference.getBook();
+    			int verse = verseDisplay.verseReference.getVerse();
+    			int chapter = verseDisplay.verseReference.getChapter();
+    			
+    			// TODO FINISH LOGIC HERE
+    		}
+    	});
+    }
+    
     /**
      * Adds an ActionListener to the "Send" button to handle verse retrieval and display.
      * 
