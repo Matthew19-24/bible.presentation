@@ -35,18 +35,33 @@ public class ReferenceSelection {
         // Create a custom JButton for "Send"
         JButton sendButton = new JButton("Send");
         panel.add(sendButton);
+        
+        // Create a custom JButton for "Next"
+        JButton previousButton = new JButton("Previous");
+        panel.add(previousButton);
+        
+        // Create a custom JButton for "Next"
+        JButton nextButton = new JButton("Next");
+        panel.add(nextButton);
 
         // Add an ActionListener to comboBox1
         comboBox1.addActionListener(e -> {
             chapterField.setText("1");
             verseField.setText("1");
         });
+        
+        // Add the next button listener
+        addNextButtonListener(nextButton, verseDisplayGUI);
 
         // Add the send button listener
         addSendButtonListener(sendButton, comboBox1, chapterField, verseField, verseDisplayGUI);
+        
+        // Add the previous button listener
+        addPreviousButtonListener(previousButton, verseDisplayGUI);
 
         // Create a custom JDialog to hold the panel
         JDialog dialog = createJDialog(panel);
+        dialog.setResizable(false); // Set the dialog as non-resizable
         dialog.setVisible(true);
     }
     
@@ -86,6 +101,138 @@ public class ReferenceSelection {
     }
     
     /**
+     * Adds the next button listener to handle verse retrieval and display
+     * @param nextButton The next button.
+     * @param verseDisplay The Verse Display GUI.
+     */
+    private static void addNextButtonListener(JButton nextButton, VerseDisplay verseDisplay) {
+    	nextButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			String book = verseDisplay.verseReference.getBook();
+    			int verse = verseDisplay.verseReference.getVerse() + 1;
+    			int chapter = verseDisplay.verseReference.getChapter();
+    			
+    			try {
+    			
+    				// Check if the selected chapter and verse are within the valid range
+    				int maxChapter = BibleAPI.getChapters(book).length;
+                
+    				
+    				if(chapter > 0 && chapter <= maxChapter) {
+                    	int maxVerse = BibleAPI.getVerses(book, chapter).length;
+                    
+                        if (verse > 0 && verse <= maxVerse) {
+
+                            // Update the text in the VerseDisplay GUI with the selected options
+                            String verseText1 = BibleAPI.getVerse(book, chapter, verse);
+                            verseDisplay.setText(verseText1);
+                            verseDisplay.verseReference.setBook(book);
+                            verseDisplay.verseReference.setChapter(chapter);
+                            verseDisplay.verseReference.setVerse(verse);
+                            System.out.println(verseDisplay.verseReference.getBook() + " " + verseDisplay.verseReference.getChapter() + ":" + verseDisplay.verseReference.getVerse());
+                            
+                        } else {
+                            // Show an error message for out of range input
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "There is no next verse!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            		);
+                        		}
+                    } else {
+                        // Show an error message for out of range input
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "There is no next verse!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        		);
+                    		}
+                
+    			} 
+    			catch (NumberFormatException ex) {
+                    // Show an error message for invalid integer input
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "There is nothing next!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                
+    			}
+    		}
+    	});
+    }
+    
+    /**
+     * Adds the previous button listener to handle verse retrieval and display
+     * @param previousButton The previous button.
+     * @param verseDisplay The Verse Display GUI.
+     */
+    private static void addPreviousButtonListener(JButton previousButton, VerseDisplay verseDisplay) {
+    	previousButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			String book = verseDisplay.verseReference.getBook();
+    			int verse = verseDisplay.verseReference.getVerse() -1;
+    			int chapter = verseDisplay.verseReference.getChapter();
+    			
+    			try {
+    			
+    				// Check if the selected chapter and verse are within the valid range
+    				int maxChapter = BibleAPI.getChapters(book).length;
+                
+    				
+    				if(chapter > 0 && chapter <= maxChapter) {
+                    	int maxVerse = BibleAPI.getVerses(book, chapter).length;
+                    
+                        if (verse > 0 && verse <= maxVerse) {
+
+                            // Update the text in the VerseDisplay GUI with the selected options
+                            String verseText1 = BibleAPI.getVerse(book, chapter, verse);
+                            verseDisplay.setText(verseText1);
+                            verseDisplay.verseReference.setBook(book);
+                            verseDisplay.verseReference.setChapter(chapter);
+                            verseDisplay.verseReference.setVerse(verse);
+                            System.out.println(verseDisplay.verseReference.getBook() + " " + verseDisplay.verseReference.getChapter() + ":" + verseDisplay.verseReference.getVerse());
+                            
+                        } else {
+                            // Show an error message for out of range input
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "There is no previous verse!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            		);
+                        		}
+                    } else {
+                        // Show an error message for out of range input
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "There is no previous verse!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        		);
+                    		}
+                
+    			} 
+    			catch (NumberFormatException ex) {
+                    // Show an error message for invalid integer input
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "There is nothing previous!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                
+    			}
+    		}
+    	});
+    }
+    
+    /**
      * Adds an ActionListener to the "Send" button to handle verse retrieval and display.
      * 
      * @param sendButton The JButton representing the "Send" button.
@@ -100,28 +247,32 @@ public class ReferenceSelection {
     		@Override
     		public void actionPerformed(ActionEvent e) {
     			// Get the selected options from the components
-                String selectedOption1 = (String) comboBox1.getSelectedItem();
+                String selectedBook = BibleAPI.getBookID((String) comboBox1.getSelectedItem());
                 String chapterText = chapterField.getText().trim();
                 String verseText = verseField.getText().trim();
 
                 if (!chapterText.isEmpty() && !verseText.isEmpty()) {
                     try {
-                        int selectedOption2 = Integer.parseInt(chapterText);
-                        int selectedOption3 = Integer.parseInt(verseText);
+                        int chapter = Integer.parseInt(chapterText);
+                        int verse = Integer.parseInt(verseText);
 
                         // Check if the selected chapter and verse are within the valid range
-                        int maxChapter = BibleAPI.getChapters(BibleAPI.getBookID(selectedOption1)).length;
+                        int maxChapter = BibleAPI.getChapters(selectedBook).length;
              
                         
-                        if(selectedOption2 > 0 && selectedOption2 <=maxChapter) {
-                        int maxVerse = BibleAPI.getVerses(BibleAPI.getBookID(selectedOption1), selectedOption2).length;
+                        if(chapter > 0 && chapter <= maxChapter) {
+                        	int maxVerse = BibleAPI.getVerses(selectedBook, chapter).length;
                         
-	                        if (selectedOption3 > 0 && selectedOption3 <= maxVerse) {
+	                        if (verse > 0 && verse <= maxVerse) {
 	
 	                            // Update the text in the VerseDisplay GUI with the selected options
-	                        	System.out.println(selectedOption2 + "<=" + maxChapter);
-	                            String verseText1 = BibleAPI.getVerse(BibleAPI.getBookID(selectedOption1), selectedOption2, selectedOption3);
+	                            String verseText1 = BibleAPI.getVerse(selectedBook, chapter, verse);
 	                            verseDisplayGUI.setText(verseText1);
+	                            verseDisplayGUI.verseReference.setBook(selectedBook);
+	                            verseDisplayGUI.verseReference.setChapter(chapter);
+	                            verseDisplayGUI.verseReference.setVerse(verse);
+	                            System.out.println(verseDisplayGUI.verseReference.getBook() + " " + verseDisplayGUI.verseReference.getChapter() + ":" + verseDisplayGUI.verseReference.getVerse());
+	                            
 	                        } else {
 	                            // Show an error message for out of range input
 	                            JOptionPane.showMessageDialog(

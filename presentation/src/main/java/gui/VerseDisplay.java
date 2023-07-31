@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import data.VerseReference;
 import java.util.StringTokenizer;
 
 /**
@@ -13,9 +14,14 @@ import java.util.StringTokenizer;
 public class VerseDisplay extends JFrame {
 
 	/**
+	 * The verse reference currently displayed on screen.
+	 */
+	VerseReference verseReference = new VerseReference();
+	
+	/**
 	 * The verse to be displayed on the screen
 	 */
-	private static String verse = "Please select a verse and click Send.";
+	private static String displayText = "Please select a verse and click Send.";
 	
 	/**
 	 * The Jlabel to display the verse with
@@ -41,7 +47,7 @@ public class VerseDisplay extends JFrame {
         getContentPane().add(textLabel);
 
         // Set an initial text
-        setText(verse);
+        setText(displayText);
 
         // Add a ComponentListener to detect window resizing and update the text size accordingly
         addComponentListener(new java.awt.event.ComponentAdapter() {

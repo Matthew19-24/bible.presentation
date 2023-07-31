@@ -3,7 +3,7 @@ package main;
 import javax.swing.SwingUtilities;
 import gui.*;
 
-public class programMain {
+public class ProgramMain {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
